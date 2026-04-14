@@ -373,6 +373,119 @@
     .days-grid { grid-template-columns: 1fr 1fr; }
     .guide-cols { grid-template-columns: 1fr; }
   }
+  /* ── Checked / done state ── */
+.day-card.done {
+  background: #f0f7f0;
+  opacity: 0.75;
+}
+
+.day-card.done .meal-name {
+  text-decoration: line-through;
+  color: var(--muted);
+}
+
+.day-card.done .day-num {
+  opacity: 0.4;
+}
+
+.check-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 10px;
+  padding: 5px 12px 5px 8px;
+  border-radius: 20px;
+  border: 1.5px solid var(--border);
+  background: transparent;
+  font-family: 'Karla', sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--muted);
+  cursor: pointer;
+  transition: all 0.18s;
+  width: fit-content;
+}
+
+.check-btn:hover {
+  border-color: var(--accent2);
+  color: var(--accent2);
+  background: #f0f7f0;
+}
+
+.check-icon {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  border: 1.5px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  background: white;
+  flex-shrink: 0;
+}
+
+.day-card.done .check-btn {
+  border-color: var(--accent2);
+  color: var(--accent2);
+  background: #e4f0e4;
+}
+
+.day-card.done .check-btn .check-icon {
+  background: var(--accent2);
+  border-color: var(--accent2);
+  color: white;
+}
+
+/* Progress bar */
+.progress-wrap {
+  max-width: 960px;
+  margin: 20px auto 0;
+  padding: 0 24px;
+}
+
+.progress-label {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--muted);
+}
+
+.progress-label strong { color: var(--accent2); font-size: 13px; }
+
+.progress-bar-outer {
+  background: var(--border);
+  border-radius: 20px;
+  height: 8px;
+  overflow: hidden;
+}
+
+.progress-bar-inner {
+  height: 100%;
+  background: var(--accent2);
+  border-radius: 20px;
+  transition: width 0.4s ease;
+  width: 0%;
+}
+
+.reset-btn {
+  font-family: 'Karla', sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--muted);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 2px 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  transition: color 0.15s;
+}
+
+.reset-btn:hover { color: var(--accent); }
 </style>
 </head>
 <body>
@@ -402,6 +515,18 @@
   <button class="filter-btn" onclick="filterMeals('seafood', this)">Seafood Nights</button>
 </div>
 
+  <div class="progress-wrap">
+  <div class="progress-label">
+    <span>Meals completed this month</span>
+    <div style="display:flex;align-items:center;gap:12px;">
+      <strong id="progressText">0 of 30</strong>
+      <button class="reset-btn" onclick="resetAll()">↺ Reset</button>
+    </div>
+  </div>
+  <div class="progress-bar-outer">
+    <div class="progress-bar-inner" id="progressBar"></div>
+  </div>
+</div>
 <div class="weeks" id="weeksContainer"></div>
 
 <div class="guide-wrap">
@@ -635,7 +760,51 @@ function filterMeals(type, btn) {
   btn.classList.add('active');
   buildUI(type);
 }
+  
+// ── Checkmark + localStorage persistence ──
+const STORAGE_KEY = 'mealplan_checked';
 
+function getChecked() {
+  try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || []; }
+  catch { return []; }
+}
+
+function saveChecked(arr) {
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(arr)); } catch {}
+}
+
+function toggleDay(day) {
+  let checked = getChecked();
+  checked = checked.includes(day)
+    ? checked.filter(d => d !== day)
+    : [...checked, day];
+  saveChecked(checked);
+  const card = document.querySelector(`.day-card[data-day="${day}"]`);
+  if (card) applyCheckedState(card, checked.includes(day));
+  updateProgress();
+}
+
+function applyCheckedState(card, isDone) {
+  const icon  = card.querySelector('.check-icon');
+  const label = card.querySelector('.check-label');
+  card.classList.toggle('done', isDone);
+  icon.textContent  = isDone ? '✓' : '';
+  label.textContent = isDone ? 'Done!' : 'Mark as made';
+}
+
+function updateProgress() {
+  const count = getChecked().length;
+  document.getElementById('progressText').textContent = `${count} of 30`;
+  document.getElementById('progressBar').style.width = (count / 30 * 100) + '%';
+}
+
+function resetAll() {
+  if (!confirm('Clear all checkmarks and start fresh?')) return;
+  saveChecked([]);
+  document.querySelectorAll('.day-card.done').forEach(card => applyCheckedState(card, false));
+  updateProgress();
+}
+  
 buildUI('all');
 </script>
 </body>
