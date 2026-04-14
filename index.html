@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>30-Day Dinner Meal Plan</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Karla:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #fdf6ed;
+    --paper: #fffdf9;
+    --ink: #1a1208;
+    --muted: #7a6a52;
+    --accent: #c9401a;
+    --accent2: #2e6b3e;
+    --accent3: #c47c1a;
+    --border: #e0d5c4;
+    --tag-american: #fff0e6;
+    --tag-american-text: #c9401a;
+    --tag-mexican: #fff8e6;
+    --tag-mexican-text: #b86a00;
+    --tag-italian: #eef4f0;
+    --tag-italian-text: #2e6b3e;
+    --tag-seafood: #e8f4fb;
+    --tag-seafood-text: #1a6a9a;
+    --tag-gout: #f0f4ff;
+    --tag-gout-text: #3a5fa0;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Karla', sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    min-height: 100vh;
+    padding: 0 0 60px;
+  }
+
+  header {
+    background: var(--ink);
+    color: var(--bg);
+    padding: 48px 32px 40px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  header::before {
+    content: '';
+    position: absolute;
+    top: -60px; right: -60px;
+    width: 300px; height: 300px;
+    border-radius: 50%;
+    background: rgba(201,64,26,0.12);
+  }
+
+  header::after {
+    content: '';
+    position: absolute;
+    bottom: -40px; left: 10%;
+    width: 200px; height: 200px;
+    border-radius: 50%;
+    background: rgba(196,124,26,0.08);
+  }
+
+  .header-inner {
+    max-width: 960px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+  }
+
+  .header-tag {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent3);
+    margin-bottom: 10px;
+  }
+
+  header h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.2rem, 6vw, 3.8rem);
+    font-weight: 900;
+    line-height: 1.05;
+    margin-bottom: 14px;
+  }
+
+  header p {
+    font-size: 15px;
+    font-weight: 300;
+    color: rgba(253,246,237,0.7);
+    max-width: 540px;
+    line-height: 1.6;
+  }
+
+  .legend {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin-top: 22px;
+    align-items: center;
+  }
+
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    font-weight: 500;
+    color: rgba(253,246,237,0.75);
+  }
+
+  .legend-dot {
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .dot-american { background: var(--accent); }
+  .dot-mexican  { background: var(--accent3); }
+  .dot-italian  { background: var(--accent2); }
+  .dot-seafood  { background: #1a6a9a; }
+
+  .gout-note {
+    margin-top: 18px;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 10px;
+    padding: 12px 16px;
+    font-size: 12px;
+    font-weight: 300;
+    color: rgba(253,246,237,0.6);
+    max-width: 580px;
+    line-height: 1.65;
+  }
+
+  .gout-note strong { color: rgba(253,246,237,0.9); font-weight: 600; }
+
+  .controls {
+    max-width: 960px;
+    margin: 28px auto 0;
+    padding: 0 24px;
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .filter-btn {
+    padding: 7px 18px;
+    border-radius: 20px;
+    border: 1.5px solid var(--border);
+    background: var(--paper);
+    font-family: 'Karla', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.18s;
+    color: var(--ink);
+  }
+
+  .filter-btn:hover { border-color: var(--accent); color: var(--accent); }
+  .filter-btn.active { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+
+  .weeks {
+    max-width: 960px;
+    margin: 32px auto 0;
+    padding: 0 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+  }
+
+  .week-block {
+    background: var(--paper);
+    border: 1.5px solid var(--border);
+    border-radius: 16px;
+    overflow: hidden;
+  }
+
+  .week-header {
+    background: var(--ink);
+    color: var(--bg);
+    padding: 14px 24px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .week-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem;
+    font-weight: 900;
+    opacity: 0.2;
+    line-height: 1;
+  }
+
+  .week-title {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--accent3);
+  }
+
+  .week-sub {
+    font-size: 13px;
+    font-weight: 300;
+    opacity: 0.55;
+  }
+
+  .days-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  }
+
+  .day-card {
+    padding: 18px 20px;
+    border-bottom: 1px solid var(--border);
+    border-right: 1px solid var(--border);
+    transition: background 0.15s;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .day-card:hover { background: #fdf0e4; }
+  .day-card.hidden { display: none; }
+
+  .day-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 5px;
+  }
+
+  .day-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: var(--ink);
+    margin-bottom: 10px;
+  }
+
+  .meal-name {
+    font-size: 14.5px;
+    font-weight: 600;
+    color: var(--ink);
+    line-height: 1.3;
+    margin-bottom: 7px;
+  }
+
+  .meal-desc {
+    font-size: 12px;
+    font-weight: 300;
+    color: var(--muted);
+    line-height: 1.55;
+    margin-bottom: 10px;
+    flex: 1;
+  }
+
+  .gout-tip {
+    font-size: 11px;
+    font-weight: 400;
+    color: var(--tag-gout-text);
+    background: var(--tag-gout);
+    border-radius: 6px;
+    padding: 5px 8px;
+    margin-bottom: 8px;
+    line-height: 1.45;
+  }
+
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    margin-top: auto;
+  }
+
+  .cuisine-tag {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 3px 9px;
+    border-radius: 20px;
+  }
+
+  .tag-american { background: var(--tag-american); color: var(--tag-american-text); }
+  .tag-mexican  { background: var(--tag-mexican);  color: var(--tag-mexican-text);  }
+  .tag-italian  { background: var(--tag-italian);  color: var(--tag-italian-text);  }
+  .tag-seafood  { background: var(--tag-seafood);  color: var(--tag-seafood-text);  }
+
+  .guide-wrap {
+    max-width: 960px;
+    margin: 32px auto 0;
+    padding: 0 24px;
+  }
+
+  .guide-inner {
+    background: var(--paper);
+    border: 1.5px solid var(--border);
+    border-radius: 16px;
+    padding: 26px 28px;
+  }
+
+  .guide-inner h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.2rem;
+    margin-bottom: 18px;
+  }
+
+  .guide-cols {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+  }
+
+  .guide-col h4 {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+
+  .guide-col.good h4  { color: var(--accent2); }
+  .guide-col.limit h4 { color: var(--accent3); }
+
+  .guide-col ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .guide-col ul li {
+    font-size: 13px;
+    font-weight: 300;
+    color: var(--muted);
+    padding-left: 14px;
+    position: relative;
+    line-height: 1.45;
+  }
+
+  .guide-col ul li::before {
+    content: '·';
+    position: absolute;
+    left: 0;
+    font-weight: 900;
+  }
+
+  .guide-col.good ul li::before  { color: var(--accent2); }
+  .guide-col.limit ul li::before { color: var(--accent3); }
+
+  footer {
+    max-width: 960px;
+    margin: 36px auto 0;
+    padding: 0 24px;
+    text-align: center;
+    font-size: 12px;
+    color: var(--muted);
+    font-weight: 300;
+    line-height: 1.7;
+  }
+
+  @media (max-width: 540px) {
+    header { padding: 36px 18px 32px; }
+    .controls, .weeks, .guide-wrap { padding: 0 14px; }
+    .days-grid { grid-template-columns: 1fr 1fr; }
+    .guide-cols { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="header-tag">Family Dinner Rotation — Gout-Conscious</div>
+    <h1>30-Day<br>Meal Plan</h1>
+    <p>American, Mexican, and Italian favorites. No spaghetti sauce. Seafood in moderation. Gout-friendly portioning throughout — without giving up the food you actually love.</p>
+    <div class="legend">
+      <div class="legend-item"><div class="legend-dot dot-american"></div>American</div>
+      <div class="legend-item"><div class="legend-dot dot-mexican"></div>Mexican</div>
+      <div class="legend-item"><div class="legend-dot dot-italian"></div>Italian</div>
+      <div class="legend-item"><div class="legend-dot dot-seafood"></div>Seafood Night</div>
+    </div>
+    <div class="gout-note">
+      <strong>Gout approach:</strong> Chicken leads most nights. Beef portioned to 4–6 oz. Seafood included — keep portions to ~4 oz and pair with plenty of rice and veg. No organ meats, no anchovies. Homemade sauces over processed. Water with every dinner.
+    </div>
+  </div>
+</header>
+
+<div class="controls">
+  <button class="filter-btn active" onclick="filterMeals('all', this)">All Meals</button>
+  <button class="filter-btn" onclick="filterMeals('american', this)">American</button>
+  <button class="filter-btn" onclick="filterMeals('mexican', this)">Mexican</button>
+  <button class="filter-btn" onclick="filterMeals('italian', this)">Italian</button>
+  <button class="filter-btn" onclick="filterMeals('seafood', this)">Seafood Nights</button>
+</div>
+
+<div class="weeks" id="weeksContainer"></div>
+
+<div class="guide-wrap">
+  <div class="guide-inner">
+    <h3>Gout-Friendly Kitchen Reference</h3>
+    <div class="guide-cols">
+      <div class="guide-col good">
+        <h4>Freely Enjoy</h4>
+        <ul>
+          <li>Chicken and turkey — lower purine, great for most nights</li>
+          <li>Eggs — gout-neutral, solid protein</li>
+          <li>Low-fat dairy — cheese, cream, and sour cream are all fine</li>
+          <li>Vegetables — peppers, onions, corn, beans, leafy greens</li>
+          <li>Rice, tortillas, and pasta — complex carbs are your friend</li>
+          <li>Tart cherry juice — shown to reduce flare frequency</li>
+          <li>Water with every meal — helps flush uric acid</li>
+          <li>Olive oil, garlic, fresh herbs — cook with them freely</li>
+        </ul>
+      </div>
+      <div class="guide-col limit">
+        <h4>Enjoy in Moderation</h4>
+        <ul>
+          <li>Beef and pork — keep to 4–6 oz portions, not every single night</li>
+          <li>Seafood — love it, just keep to ~4 oz per person, 1–2x per week</li>
+          <li>White fish (cod, tilapia) — lower purine than shrimp, great option</li>
+          <li>Beer and liquor — major gout trigger, go easy</li>
+          <li>Store-bought sauces — often have HFCS; make from scratch when possible</li>
+          <li>Anchovies and sardines — skip these specifically</li>
+          <li>Organ meats — skip entirely</li>
+          <li>Sugary sodas — swap for water or low-sugar drinks at dinner</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  Filter by cuisine above &middot; Seafood filter shows all ocean nights &middot; Blue cards = seafood &middot; Keep seafood to ~4 oz per person
+</footer>
+
+<script>
+const meals = [
+  { day:1,  name:"Classic Smash Burgers", cuisine:"american", seafood:false,
+    desc:"Double smash patties, American cheese, pickles, special sauce on brioche buns. Piled with lettuce, tomato, and onion.",
+    gout:"Keep patties to 4 oz each. Load the toppings to fill the plate." },
+
+  { day:2,  name:"Seasoned Beef Tacos", cuisine:"mexican", seafood:false,
+    desc:"Lean ground beef with homemade taco seasoning, shredded cheddar, lettuce, tomato, sour cream in crunchy shells.",
+    gout:"Use lean ground beef or mix in ground turkey. Skip store-bought seasoning packets with additives." },
+
+  { day:3,  name:"Chicken Alfredo", cuisine:"italian", seafood:false,
+    desc:"Grilled chicken breast over fettuccine in a rich parmesan cream sauce.",
+    gout:"Cream and parmesan are gout-neutral. Chicken is the best protein pick here." },
+
+  { day:4,  name:"Carne Asada Tacos", cuisine:"mexican", seafood:false,
+    desc:"Marinated skirt steak, grilled with char, cilantro, white onion, and lime on warm corn tortillas.",
+    gout:"4–5 oz of steak per person. Pair with rice and black beans to round out the plate." },
+
+  { day:5,  name:"Stuffed Chicken Breast", cuisine:"american", seafood:false,
+    desc:"Chicken breasts filled with spinach and cream cheese, baked golden with a garlic butter drizzle.",
+    gout:"One of the best gout-friendly dinners on the plan. Chicken and dairy all the way." },
+
+  { day:6,  name:"Shrimp Tacos", cuisine:"mexican", seafood:true,
+    desc:"Spiced pan-seared shrimp, chipotle slaw, sliced avocado, and fresh lime on warm flour tortillas.",
+    gout:"Keep shrimp to about 4 oz per person. Load up on slaw and avocado to fill the plate." },
+
+  { day:7,  name:"Grilled Hotdogs & Oven Fries", cuisine:"american", seafood:false,
+    desc:"Grilled all-beef dogs with a full toppings bar — mustard, relish, onion, kraut — and seasoned crispy oven fries.",
+    gout:"1–2 dogs per person. Choose lower-sodium options when available." },
+
+  { day:8,  name:"Buttermilk Fried Chicken", cuisine:"american", seafood:false,
+    desc:"Buttermilk-brined, double-dredged, cast iron fried — served with mashed potatoes and homemade gravy.",
+    gout:"Use homemade gravy to control sodium and skip the additives in jarred versions." },
+
+  { day:9,  name:"Grilled Chicken Tacos", cuisine:"mexican", seafood:false,
+    desc:"Juicy grilled chicken thighs, pickled red onion, avocado crema, and cotija on flour tortillas.",
+    gout:null },
+
+  { day:10, name:"Chicken Piccata", cuisine:"italian", seafood:false,
+    desc:"Pan-seared chicken cutlets in a bright lemon-caper butter sauce over angel hair pasta.",
+    gout:"Lemon and capers are gout-neutral. Great lower-purine Italian dinner." },
+
+  { day:11, name:"Herb-Grilled Chicken Thighs", cuisine:"american", seafood:false,
+    desc:"Herb-marinated chicken thighs grilled until golden, with charred corn and a crisp green salad.",
+    gout:null },
+
+  { day:12, name:"Garlic Butter Shrimp & Rice", cuisine:"american", seafood:true,
+    desc:"Shrimp sautéed in garlic herb butter over fluffy white rice with roasted vegetables on the side.",
+    gout:"4 oz shrimp per person. The rice and roasted veg help balance the purine load." },
+
+  { day:13, name:"Chicken Marsala", cuisine:"italian", seafood:false,
+    desc:"Tender chicken cutlets in a savory mushroom and Marsala wine sauce over buttered egg noodles.",
+    gout:"Chicken-based — solid choice. Mushrooms are fine for gout." },
+
+  { day:14, name:"BBQ Pulled Chicken Sandwiches", cuisine:"american", seafood:false,
+    desc:"Slow-cooked pulled chicken with homemade BBQ sauce, creamy coleslaw on toasted brioche.",
+    gout:"Homemade BBQ sauce avoids the high-fructose corn syrup in most store-bought versions." },
+
+  { day:15, name:"Chicken Birria Tacos", cuisine:"mexican", seafood:false,
+    desc:"Braised chicken in rich red chile consommé, dipped tortillas pan-crisped with Oaxacan cheese. Served with dipping broth.",
+    gout:"Red chile birria sauce is totally different from tomato-based pasta sauce — and it's gout-friendly." },
+
+  { day:16, name:"Baked Ziti with Italian Sausage", cuisine:"italian", seafood:false,
+    desc:"Ziti layered with ricotta, mild Italian sausage, and a creamy white garlic sauce — baked until golden.",
+    gout:"Keep sausage portions moderate. Ricotta and pasta are gout-neutral." },
+
+  { day:17, name:"Classic Meatloaf", cuisine:"american", seafood:false,
+    desc:"Brown sugar glazed meatloaf with creamy mashed potatoes and buttered green beans.",
+    gout:"One good slice — about 4–5 oz. Fill the rest of the plate with potatoes and beans." },
+
+  { day:18, name:"Pork Carnitas Tacos", cuisine:"mexican", seafood:false,
+    desc:"Slow-braised crispy pork carnitas, pineapple salsa, pickled jalapeño, and cilantro on corn tortillas.",
+    gout:"Moderate the carnitas. Fresh pineapple salsa and toppings keep it balanced." },
+
+  { day:19, name:"Stuffed Shells", cuisine:"italian", seafood:false,
+    desc:"Jumbo pasta shells filled with ricotta and spinach, baked in a creamy white garlic sauce.",
+    gout:"All gout-friendly — ricotta, spinach, pasta, cream. One of the cleanest meals on the plan." },
+
+  { day:20, name:"Bacon Smash Burgers", cuisine:"american", seafood:false,
+    desc:"Crispy bacon, caramelized onions, pepper jack, and chipotle mayo on a toasted brioche bun.",
+    gout:"4 oz patties. One or two strips of bacon is fine — just don't overdo it." },
+
+  { day:21, name:"Red Sauce Chicken Enchiladas", cuisine:"mexican", seafood:false,
+    desc:"Shredded roasted chicken in corn tortillas, smothered in homemade red chile enchilada sauce and melted cheese.",
+    gout:"Chicken and homemade chile sauce — solid, gout-friendly combo." },
+
+  { day:22, name:"Garlic Shrimp Fettuccine", cuisine:"italian", seafood:true,
+    desc:"Shrimp tossed with fettuccine in a white wine garlic butter sauce with parsley and lemon zest.",
+    gout:"4 oz shrimp per person. Serve with a big side salad to keep the meal balanced." },
+
+  { day:23, name:"Pan-Fried Pork Chops", cuisine:"american", seafood:false,
+    desc:"Thick-cut bone-in chops with a golden crust, served with skillet corn and roasted potatoes.",
+    gout:"One good chop per person. Load up on the corn and potatoes to round it out." },
+
+  { day:24, name:"Steak & Chicken Fajitas", cuisine:"mexican", seafood:false,
+    desc:"Sizzling skirt steak and chicken with peppers and onions — flour tortillas, guac, sour cream, and pico de gallo.",
+    gout:"Go heavier on the chicken, lighter on the steak. All the toppings are gout-neutral." },
+
+  { day:25, name:"Three-Cheese Chicken Alfredo", cuisine:"italian", seafood:false,
+    desc:"Parmesan, romano, and asiago cream sauce over fettuccine with pan-seared chicken breast.",
+    gout:"Chicken and cream sauce — one of the best gout-friendly Italian meals on this plan." },
+
+  { day:26, name:"Fish Tacos", cuisine:"mexican", seafood:true,
+    desc:"Crispy beer-battered cod, cabbage slaw, chipotle crema, and pickled red onion on warm corn tortillas.",
+    gout:"White fish like cod is lower in purines than shrimp. Great seafood option." },
+
+  { day:27, name:"Honey Garlic Fried Chicken", cuisine:"american", seafood:false,
+    desc:"Crispy fried chicken tossed in a sweet honey garlic glaze, served over steamed white rice.",
+    gout:null },
+
+  { day:28, name:"Ground Beef Enchiladas", cuisine:"mexican", seafood:false,
+    desc:"Seasoned lean ground beef and cheddar rolled in flour tortillas with red chile enchilada sauce.",
+    gout:"Use lean ground beef. Red chile enchilada sauce is fine — not the same as tomato pasta sauce." },
+
+  { day:29, name:"Build-Your-Own Burger Bar", cuisine:"american", seafood:false,
+    desc:"Full toppings spread — lettuce, tomato, pickles, onion, bacon, multiple cheeses, loaded oven fries. Everyone builds their own.",
+    gout:"4 oz patties. The fun is in the toppings, not the size of the burger." },
+
+  { day:30, name:"Carne Asada Platter", cuisine:"mexican", seafood:false,
+    desc:"Marinated flank steak with Mexican rice, charro beans, grilled onions, guacamole, and warm tortillas.",
+    gout:"End the month right — 5 oz of steak, then fill the plate with rice, beans, and guac." },
+];
+
+const weekLabels = ["Week One", "Week Two", "Week Three", "Week Four", "Final Days"];
+const dayNames = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+
+function buildUI(filter) {
+  const container = document.getElementById('weeksContainer');
+  container.innerHTML = '';
+
+  const weeks = [[], [], [], [], []];
+  meals.forEach(m => {
+    const wi = m.day <= 7 ? 0 : m.day <= 14 ? 1 : m.day <= 21 ? 2 : m.day <= 28 ? 3 : 4;
+    weeks[wi].push(m);
+  });
+
+  weeks.forEach((week, wi) => {
+    const visibleCount = filter === 'all' ? week.length
+      : filter === 'seafood' ? week.filter(m => m.seafood).length
+      : week.filter(m => m.cuisine === filter).length;
+
+    if (visibleCount === 0) return;
+
+    const block = document.createElement('div');
+    block.className = 'week-block';
+    block.innerHTML = `
+      <div class="week-header">
+        <div class="week-num">0${wi+1}</div>
+        <div>
+          <div class="week-title">${weekLabels[wi]}</div>
+          <div class="week-sub">${visibleCount} dinner${visibleCount !== 1 ? 's' : ''}</div>
+        </div>
+      </div>
+    `;
+
+    const grid = document.createElement('div');
+    grid.className = 'days-grid';
+
+    week.forEach(m => {
+      const isVisible = filter === 'all' ? true
+        : filter === 'seafood' ? m.seafood
+        : m.cuisine === filter;
+
+      const card = document.createElement('div');
+      card.className = 'day-card' + (isVisible ? '' : ' hidden');
+
+      let tagsHTML = '';
+      if (m.seafood) tagsHTML += `<span class="cuisine-tag tag-seafood">Seafood</span>`;
+      tagsHTML += `<span class="cuisine-tag tag-${m.cuisine}">${m.cuisine.charAt(0).toUpperCase()+m.cuisine.slice(1)}</span>`;
+
+      const goutHTML = m.gout ? `<div class="gout-tip">💧 ${m.gout}</div>` : '';
+
+      card.innerHTML = `
+        <div class="day-label">${dayNames[(m.day-1)%7]} · Day ${m.day}</div>
+        <div class="day-num">${m.day}</div>
+        <div class="meal-name">${m.name}</div>
+        <div class="meal-desc">${m.desc}</div>
+        ${goutHTML}
+        <div class="tags">${tagsHTML}</div>
+      `;
+      grid.appendChild(card);
+    });
+
+    block.appendChild(grid);
+    container.appendChild(block);
+  });
+}
+
+function filterMeals(type, btn) {
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  buildUI(type);
+}
+
+buildUI('all');
+</script>
+</body>
+</html>
