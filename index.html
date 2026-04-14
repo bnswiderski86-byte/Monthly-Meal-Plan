@@ -739,6 +739,10 @@ function buildUI(filter) {
 
       const goutHTML = m.gout ? `<div class="gout-tip">💧 ${m.gout}</div>` : '';
 
+   const isChecked = getChecked().includes(m.day);
+      card.dataset.day = m.day;
+      if (isChecked) card.classList.add('done');
+
       card.innerHTML = `
         <div class="day-label">${dayNames[(m.day-1)%7]} · Day ${m.day}</div>
         <div class="day-num">${m.day}</div>
@@ -746,10 +750,13 @@ function buildUI(filter) {
         <div class="meal-desc">${m.desc}</div>
         ${goutHTML}
         <div class="tags">${tagsHTML}</div>
+        <button class="check-btn" onclick="toggleDay(${m.day})">
+          <span class="check-icon">${isChecked ? '✓' : ''}</span>
+          <span class="check-label">${isChecked ? 'Done!' : 'Mark as made'}</span>
+        </button>
       `;
       grid.appendChild(card);
     });
-
     block.appendChild(grid);
     container.appendChild(block);
   });
