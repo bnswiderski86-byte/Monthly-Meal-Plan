@@ -691,7 +691,15 @@ const meals = [
 ];
 
 const weekLabels = ["Week One", "Week Two", "Week Three", "Week Four", "Week Five"];
-const dayNames = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun']; 
+const dayNames = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+
+// Anchor Day 1 to today, then calculate forward
+const today = new Date();
+const startDayIndex = today.getDay(); // 0=Sun, 1=Mon, etc.
+
+function getDayName(dayNum) {
+  return dayNames[(startDayIndex + dayNum - 1) % 7];
+} 
 
 
 function buildUI(filter) {
@@ -745,7 +753,7 @@ function buildUI(filter) {
       if (isChecked) card.classList.add('done');
 
       card.innerHTML = `
-        <div class="day-label">${dayNames[(m.day-1)%7]} · Day ${m.day}</div>
+        <div class="day-label">${getDayName(m.day)} · Day ${m.day}</div>
         <div class="day-num">${m.day}</div>
         <div class="meal-name">${m.name}</div>
         <div class="meal-desc">${m.desc}</div>
