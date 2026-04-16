@@ -719,7 +719,160 @@ function getDayName(dayNum) {
   return dayNames[date.getDay()];
 }
 
+// ── Swap pool ──────────────────────────────────────────────────────────────
+const swapPool = [
+  { name:"Grilled Chicken Sandwich", cuisine:"american", seafood:false,
+    desc:"Juicy grilled chicken breast, lettuce, tomato, pickles, and honey mustard on a toasted brioche bun. Seasoned oven fries on the side.",
+    gout:"Grilled over fried keeps purines lower. Great swap any night." },
 
+  { name:"Chicken Strip Wraps", cuisine:"american", seafood:false,
+    desc:"Crispy chicken strips, shredded lettuce, cheddar, tomato, and ranch in a large flour tortilla. Served with fries.",
+    gout:"Chicken is gout-friendly. Watch the portion size on the wrap — one is plenty." },
+
+  { name:"Patty Melt", cuisine:"american", seafood:false,
+    desc:"Seasoned beef patty with caramelized onions and melted Swiss on buttered toasted rye bread. Served with fries.",
+    gout:"Keep the patty to 4 oz. Caramelized onions are gout-neutral." },
+
+  { name:"Grilled Cheese & Tomato Soup", cuisine:"american", seafood:false,
+    desc:"Buttery golden grilled cheese on thick white bread with a warm creamy tomato soup for dipping.",
+    gout:"Low purine, easy on the stomach. One of the most gout-friendly swaps on the list." },
+
+  { name:"Pot Roast", cuisine:"american", seafood:false,
+    desc:"Slow-braised chuck roast with carrots, potatoes, and onions in a rich beef broth gravy.",
+    gout:"Keep beef to 4-5 oz. Load up on the carrots and potatoes to fill the plate." },
+
+  { name:"Carolina BBQ Chicken", cuisine:"american", seafood:false,
+    desc:"Pulled chicken thighs in a tangy vinegar-based Carolina BBQ sauce, served on brioche with coleslaw.",
+    gout:"Chicken and vinegar sauce — lower purine than red meat BBQ. Great swap." },
+
+  { name:"Chicken Fried Steak", cuisine:"american", seafood:false,
+    desc:"Tenderized beef cutlet breaded and fried golden, smothered in creamy white pepper gravy. Served with mashed potatoes and green beans.",
+    gout:"Keep the cutlet to one moderate portion. Fill the plate with mashed potatoes and beans." },
+
+  { name:"BLT Club Sandwich", cuisine:"american", seafood:false,
+    desc:"Triple-decker with bacon, lettuce, tomato, turkey, and mayo on toasted white bread. Served with chips or fries.",
+    gout:"Go easy on the bacon — one or two strips. Turkey keeps the purine load reasonable." },
+
+  { name:"Smothered Chicken Thighs", cuisine:"american", seafood:false,
+    desc:"Pan-seared chicken thighs in a creamy onion and mushroom gravy, served over mashed potatoes.",
+    gout:"Chicken thighs and mushrooms are both gout-friendly. One of the best swaps on the list." },
+
+  { name:"Honey Mustard Chicken Thighs", cuisine:"american", seafood:false,
+    desc:"Oven-baked chicken thighs glazed with honey mustard, served with roasted potatoes and green beans.",
+    gout:"Chicken and honey mustard are both gout-neutral. Easy weeknight swap." },
+
+  { name:"Pizza Night", cuisine:"american", seafood:false,
+    desc:"Homemade or order out — your call. Load it up however the family wants it.",
+    gout:"Watch sodium on delivery pizza. Homemade lets you control the toppings and portions." },
+
+  { name:"Takeout Night", cuisine:"american", seafood:false,
+    desc:"Your choice — pick up whatever sounds good tonight.",
+    gout:"Watch sodium and portion sizes. Avoid organ meat dishes and high-purine soups." },
+];
+
+// ── Swap storage ───────────────────────────────────────────────────────────
+const SWAP_KEY = 'mealplan_swaps';
+
+function getSwaps() {
+  try { return JSON.parse(localStorage.getItem(SWAP_KEY)) || {}; }
+  catch { return {}; }
+}
+
+function saveSwaps(obj) {
+  try { localStorage.setItem(SWAP_KEY, JSON.stringify(obj)); } catch {}
+}
+
+// Clear swaps on month reset — add this right after the existing month reset block
+// (already handled below by clearing SWAP_KEY alongside mealplan_checked)
+
+let activeSwapDay = null;
+
+function openSwapMenu(day) {
+  activeSwapDay = day;
+  const menu = document.getElementById('swapMenu');
+  const list = document.getElementById('swapList');
+  list.innerHTML = '';
+
+  // Add "Restore original" if this day has a swap
+  const swaps = getSwaps();
+  if (swaps[day]) {
+    const restoreBtn = document.createElement('button');
+    restoreBtn.className = 'swap-option restore-option';
+    restoreBtn.innerHTML = `<span class="swap-option-name">↩ Restore Original Meal</span>`;
+    restoreBtn.onclick = () => { restoreOriginal(day); closeSwapMenu(); };
+    list.appendChild(restoreBtn);
+  }
+
+  swapPool.forEach((meal, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'swap-option';
+    const tagColor = meal.cuisine === 'american' ? 'tag-american'
+      : meal.cuisine === 'mexican' ? 'tag-mexican'
+      : meal.cuisine === 'italian' ? 'tag-italian' : 'tag-american';
+    btn.innerHTML = `
+      <span class="swap-option-name">${meal.name}</span>
+      <span class="cuisine-tag ${tagColor}">${meal.cuisine.charAt(0).toUpperCase()+meal.cuisine.slice(1)}</span>
+    `;
+    btn.onclick = () => { applySwap(day, i); closeSwapMenu(); };
+    list.appendChild(btn);
+  });
+
+  menu.classList.add('open');
+}
+
+function closeSwapMenu() {
+  document.getElementById('swapMenu').classList.remove('open');
+  activeSwapDay = null;
+}
+
+function applySwap(day, poolIndex) {
+  const swaps = getSwaps();
+  swaps[day] = poolIndex;
+  saveSwaps(swaps);
+  rebuildCard(day);
+}
+
+function restoreOriginal(day) {
+  const swaps = getSwaps();
+  delete swaps[day];
+  saveSwaps(swaps);
+  rebuildCard(day);
+}
+
+function rebuildCard(day) {
+  const card = document.querySelector(`.day-card[data-day="${day}"]`);
+  if (!card) return;
+
+  const swaps = getSwaps();
+  const checked = getChecked();
+  const isChecked = checked.includes(day);
+  const isSwapped = swaps[day] !== undefined;
+  const m = isSwapped ? { ...swapPool[swaps[day]], day } : meals.find(x => x.day === day);
+
+  let tagsHTML = '';
+  if (m.seafood) tagsHTML += `<span class="cuisine-tag tag-seafood">Seafood</span>`;
+  tagsHTML += `<span class="cuisine-tag tag-${m.cuisine}">${m.cuisine.charAt(0).toUpperCase()+m.cuisine.slice(1)}</span>`;
+  if (isSwapped) tagsHTML += `<span class="cuisine-tag tag-swap">Swapped</span>`;
+
+  const goutHTML = m.gout ? `<div class="gout-tip">💧 ${m.gout}</div>` : '';
+
+  card.className = 'day-card' + (isChecked ? ' done' : '') + (isSwapped ? ' swapped' : '');
+  card.innerHTML = `
+    <div class="day-label">${getDayName(day)} · Day ${day}</div>
+    <div class="day-num">${day}</div>
+    <div class="meal-name">${m.name}</div>
+    <div class="meal-desc">${m.desc}</div>
+    ${goutHTML}
+    <div class="tags">${tagsHTML}</div>
+    <div class="card-actions">
+      <button class="check-btn" onclick="toggleDay(${day})">
+        <span class="check-icon">${isChecked ? '✓' : ''}</span>
+        <span class="check-label">${isChecked ? 'Done!' : 'Mark as made'}</span>
+      </button>
+      <button class="swap-btn" onclick="openSwapMenu(${day})">⇄ Swap</button>
+    </div>
+  `;
+}
 function buildUI(filter) {
   const container = document.getElementById('weeksContainer');
   container.innerHTML = '';
