@@ -1037,12 +1037,6 @@ function buildUI(filter) {
       const card = document.createElement('div');
       card.className = 'day-card' + (isVisible ? '' : ' hidden');
 
-      let tagsHTML = '';
-      if (m.seafood) tagsHTML += `<span class="cuisine-tag tag-seafood">Seafood</span>`;
-      tagsHTML += `<span class="cuisine-tag tag-${m.cuisine}">${m.cuisine.charAt(0).toUpperCase()+m.cuisine.slice(1)}</span>`;
-
-      const goutHTML = m.gout ? `<div class="gout-tip">💧 ${m.gout}</div>` : '';
-
 card.dataset.day = m.day;
       grid.appendChild(card);
       rebuildCard(m.day);
