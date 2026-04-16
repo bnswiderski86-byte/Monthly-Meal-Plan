@@ -486,6 +486,129 @@
 }
 
 .reset-btn:hover { color: var(--accent); }
+
+  /* ── Swap button & menu ── */
+.card-actions {
+  display: flex;
+  gap: 6px;
+  margin-top: 10px;
+  flex-wrap: wrap;
+}
+
+.swap-btn {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 5px 12px;
+  border-radius: 20px;
+  border: 1.5px solid var(--border);
+  background: transparent;
+  font-family: 'Karla', sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--muted);
+  cursor: pointer;
+  transition: all 0.18s;
+}
+
+.swap-btn:hover {
+  border-color: var(--accent3);
+  color: var(--accent3);
+  background: #fff8e6;
+}
+
+.day-card.swapped {
+  border-right-color: var(--accent3);
+  border-bottom-color: var(--accent3);
+}
+
+.tag-swap {
+  background: #fff8e6;
+  color: var(--accent3);
+}
+
+/* Swap menu overlay */
+.swap-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  z-index: 100;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.swap-overlay.open {
+  display: flex;
+}
+
+.swap-menu {
+  background: var(--paper);
+  border-radius: 20px 20px 0 0;
+  padding: 24px;
+  width: 100%;
+  max-width: 520px;
+  max-height: 75vh;
+  overflow-y: auto;
+}
+
+.swap-menu h4 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.1rem;
+  margin-bottom: 16px;
+  color: var(--ink);
+}
+
+.swap-option {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 12px 14px;
+  margin-bottom: 6px;
+  background: var(--bg);
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
+  cursor: pointer;
+  font-family: 'Karla', sans-serif;
+  text-align: left;
+  transition: all 0.15s;
+}
+
+.swap-option:hover {
+  border-color: var(--accent3);
+  background: #fff8e6;
+}
+
+.restore-option {
+  border-color: var(--accent2);
+  color: var(--accent2);
+  margin-bottom: 12px;
+}
+
+.restore-option:hover {
+  background: #f0f7f0;
+}
+
+.swap-option-name {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.swap-close {
+  width: 100%;
+  margin-top: 10px;
+  padding: 10px;
+  border-radius: 10px;
+  border: none;
+  background: var(--ink);
+  color: var(--bg);
+  font-family: 'Karla', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
 </style>
 </head>
 <body>
