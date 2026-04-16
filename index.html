@@ -833,6 +833,7 @@ const savedMonth = localStorage.getItem(MONTH_KEY);
 const currentMonth = `${today.getFullYear()}-${today.getMonth()}`;
 if (savedMonth !== currentMonth) {
   localStorage.removeItem('mealplan_checked');
+  localStorage.removeItem('mealplan_swaps');
   localStorage.setItem(MONTH_KEY, currentMonth);
 }
 
