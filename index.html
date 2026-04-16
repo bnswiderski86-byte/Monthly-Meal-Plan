@@ -689,21 +689,31 @@ const meals = [
     desc:"Marinated flank steak with Mexican rice, charro beans, grilled onions, guacamole, and warm tortillas.",
     gout:"End the month right — 5 oz of steak, then fill the plate with rice, beans, and guac." },
 
- { day:31, name:"Crispy Chicken Sandwiches", cuisine:"american", seafood:false,
-    desc:"Buttermilk fried chicken breast, pickles, coleslaw, and chipotle mayo on a toasted brioche bun. Seasoned oven fries on the side.",
-    gout:"Chicken keeps it gout-friendly. Load up the toppings and enjoy." },
+  { day:31, name:"Malibu Chicken Sandwich", cuisine:"american", seafood:false,
+    desc:"Crispy fried chicken breast topped with shaved ham, melted Swiss cheese, and honey mustard on a toasted brioche bun. Seasoned oven fries on the side.",
+    gout:"Chicken keeps it gout-friendly. Go easy on the ham portion — processed meat in moderation." },
 ];
 
 const weekLabels = ["Week One", "Week Two", "Week Three", "Week Four", "Week Five"];
 const dayNames = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
 
 // Anchor Day 1 to today, then calculate forward
-const planStartDate = new Date(2026, 3, 15); // Month is 0-indexed: 0=Jan, 3=Apr
+const planStartDate = new Date(2026, 3, 15);
 const startDayIndex = planStartDate.getDay();
+const planMonthName = planStartDate.toLocaleString('default', { month: 'long', year: 'numeric' });
+
+const MONTH_KEY = 'mealplan_month';
+const savedMonth = localStorage.getItem(MONTH_KEY);
+if (savedMonth !== String(planStartDate.getMonth())) {
+  localStorage.removeItem('mealplan_checked');
+  localStorage.setItem(MONTH_KEY, String(planStartDate.getMonth()));
+}
 
 function getDayName(dayNum) {
-  return dayNames[(startDayIndex + dayNum - 1) % 7];
-} 
+  const date = new Date(planStartDate);
+  date.setDate(planStartDate.getDate() + dayNum - 1);
+  return dayNames[date.getDay()];
+}
 
 
 function buildUI(filter) {
