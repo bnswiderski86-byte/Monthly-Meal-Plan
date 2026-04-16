@@ -694,8 +694,8 @@ const weekLabels = ["Week One", "Week Two", "Week Three", "Week Four", "Week Fiv
 const dayNames = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
 
 // Anchor Day 1 to today, then calculate forward
-const today = new Date();
-const startDayIndex = today.getDay(); // 0=Sun, 1=Mon, etc.
+const planStartDate = new Date(2026, 3, 15); // Month is 0-indexed: 0=Jan, 3=Apr
+const startDayIndex = planStartDate.getDay();
 
 function getDayName(dayNum) {
   return dayNames[(startDayIndex + dayNum - 1) % 7];
