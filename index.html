@@ -991,7 +991,8 @@ function rebuildCard(day) {
 
   const goutHTML = m.gout ? `<div class="gout-tip">💧 ${m.gout}</div>` : '';
 
-  card.className = 'day-card' + (isChecked ? ' done' : '') + (isSwapped ? ' swapped' : '');
+ const wasHidden = card.classList.contains('hidden');
+card.className = 'day-card' + (wasHidden ? ' hidden' : '') + (isChecked ? ' done' : '') + (isSwapped ? ' swapped' : '');
   card.innerHTML = `
     <div class="day-label">${getDayName(day)} · Day ${day}</div>
     <div class="day-num">${day}</div>
