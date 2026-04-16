@@ -1034,12 +1034,12 @@ function buildUI(filter) {
         : filter === 'seafood' ? m.seafood
         : m.cuisine === filter;
 
-      const card = document.createElement('div');
+const card = document.createElement('div');
       card.className = 'day-card' + (isVisible ? '' : ' hidden');
-
-card.dataset.day = m.day;
+      card.dataset.day = m.day;
       grid.appendChild(card);
       rebuildCard(m.day);
+      if (!isVisible) card.classList.add('hidden');
     });
     block.appendChild(grid);
     container.appendChild(block);
