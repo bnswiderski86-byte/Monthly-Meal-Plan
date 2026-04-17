@@ -833,7 +833,6 @@ const savedMonth = localStorage.getItem(MONTH_KEY);
 const currentMonth = `${today.getFullYear()}-${today.getMonth()}`;
 if (savedMonth !== currentMonth) {
   localStorage.removeItem('mealplan_checked');
-  localStorage.removeItem('mealplan_swaps');
   localStorage.setItem(MONTH_KEY, currentMonth);
 }
 
@@ -896,17 +895,6 @@ const swapPool = [
 
 // ── Swap storage ───────────────────────────────────────────────────────────
 const SWAP_KEY = 'mealplan_swaps';
-// ── Checkmark + localStorage persistence ──
-const STORAGE_KEY = 'mealplan_checked';
-
-function getChecked() {
-  try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || []; }
-  catch { return []; }
-}
-
-function saveChecked(arr) {
-  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(arr)); } catch {}
-}
 
 function getSwaps() {
   try { return JSON.parse(localStorage.getItem(SWAP_KEY)) || {}; }
@@ -991,8 +979,7 @@ function rebuildCard(day) {
 
   const goutHTML = m.gout ? `<div class="gout-tip">💧 ${m.gout}</div>` : '';
 
- const wasHidden = card.classList.contains('hidden');
-card.className = 'day-card' + (wasHidden ? ' hidden' : '') + (isChecked ? ' done' : '') + (isSwapped ? ' swapped' : '');
+  card.className = 'day-card' + (isChecked ? ' done' : '') + (isSwapped ? ' swapped' : '');
   card.innerHTML = `
     <div class="day-label">${getDayName(day)} · Day ${day}</div>
     <div class="day-num">${day}</div>
@@ -1046,12 +1033,36 @@ function buildUI(filter) {
         : filter === 'seafood' ? m.seafood
         : m.cuisine === filter;
 
-const card = document.createElement('div');
+      const card = document.createElement('div');
       card.className = 'day-card' + (isVisible ? '' : ' hidden');
+
+      let tagsHTML = '';
+      if (m.seafood) tagsHTML += `<span class="cuisine-tag tag-seafood">Seafood</span>`;
+      tagsHTML += `<span class="cuisine-tag tag-${m.cuisine}">${m.cuisine.charAt(0).toUpperCase()+m.cuisine.slice(1)}</span>`;
+
+      const goutHTML = m.gout ? `<div class="gout-tip">💧 ${m.gout}</div>` : '';
+
+<<<<<<< HEAD
+   const isChecked = getChecked().includes(m.day);
       card.dataset.day = m.day;
+      if (isChecked) card.classList.add('done');
+
+      card.innerHTML = `
+        <div class="day-label">${getDayName(m.day)} · Day ${m.day}</div>
+        <div class="day-num">${m.day}</div>
+        <div class="meal-name">${m.name}</div>
+        <div class="meal-desc">${m.desc}</div>
+        ${goutHTML}
+        <div class="tags">${tagsHTML}</div>
+        <button class="check-btn" onclick="toggleDay(${m.day})">
+          <span class="check-icon">${isChecked ? '✓' : ''}</span>
+          <span class="check-label">${isChecked ? 'Done!' : 'Mark as made'}</span>
+        </button>
+      `;
+=======
+card.dataset.day = m.day;
+>>>>>>> parent of f588b9b (Update index.html)
       grid.appendChild(card);
-      rebuildCard(m.day);
-      if (!isVisible) card.classList.add('hidden');
     });
     block.appendChild(grid);
     container.appendChild(block);
@@ -1064,7 +1075,17 @@ function filterMeals(type, btn) {
   buildUI(type);
 }
   
+// ── Checkmark + localStorage persistence ──
+const STORAGE_KEY = 'mealplan_checked';
 
+function getChecked() {
+  try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || []; }
+  catch { return []; }
+}
+
+function saveChecked(arr) {
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(arr)); } catch {}
+}
 
 function toggleDay(day) {
   let checked = getChecked();
@@ -1110,4 +1131,6 @@ updateProgress();
   </div>
 </div>
 </body>
+</html>
+
 </html>
