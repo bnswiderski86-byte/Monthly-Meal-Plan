@@ -373,242 +373,241 @@
     .days-grid { grid-template-columns: 1fr 1fr; }
     .guide-cols { grid-template-columns: 1fr; }
   }
-  /* ── Checked / done state ── */
-.day-card.done {
-  background: #f0f7f0;
-  opacity: 0.75;
-}
 
-.day-card.done .meal-name {
-  text-decoration: line-through;
-  color: var(--muted);
-}
+  /* Checked / done state */
+  .day-card.done {
+    background: #f0f7f0;
+    opacity: 0.75;
+  }
 
-.day-card.done .day-num {
-  opacity: 0.4;
-}
+  .day-card.done .meal-name {
+    text-decoration: line-through;
+    color: var(--muted);
+  }
 
-.check-btn {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  margin-top: 10px;
-  padding: 5px 12px 5px 8px;
-  border-radius: 20px;
-  border: 1.5px solid var(--border);
-  background: transparent;
-  font-family: 'Karla', sans-serif;
-  font-size: 11px;
-  font-weight: 600;
-  color: var(--muted);
-  cursor: pointer;
-  transition: all 0.18s;
-  width: fit-content;
-}
+  .day-card.done .day-num {
+    opacity: 0.4;
+  }
 
-.check-btn:hover {
-  border-color: var(--accent2);
-  color: var(--accent2);
-  background: #f0f7f0;
-}
+  .check-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 12px 5px 8px;
+    border-radius: 20px;
+    border: 1.5px solid var(--border);
+    background: transparent;
+    font-family: 'Karla', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--muted);
+    cursor: pointer;
+    transition: all 0.18s;
+  }
 
-.check-icon {
-  width: 16px;
-  height: 16px;
-  border-radius: 50%;
-  border: 1.5px solid var(--border);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 10px;
-  background: white;
-  flex-shrink: 0;
-}
+  .check-btn:hover {
+    border-color: var(--accent2);
+    color: var(--accent2);
+    background: #f0f7f0;
+  }
 
-.day-card.done .check-btn {
-  border-color: var(--accent2);
-  color: var(--accent2);
-  background: #e4f0e4;
-}
+  .check-icon {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    border: 1.5px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    background: white;
+    flex-shrink: 0;
+  }
 
-.day-card.done .check-btn .check-icon {
-  background: var(--accent2);
-  border-color: var(--accent2);
-  color: white;
-}
+  .day-card.done .check-btn {
+    border-color: var(--accent2);
+    color: var(--accent2);
+    background: #e4f0e4;
+  }
 
-/* Progress bar */
-.progress-wrap {
-  max-width: 960px;
-  margin: 20px auto 0;
-  padding: 0 24px;
-}
+  .day-card.done .check-btn .check-icon {
+    background: var(--accent2);
+    border-color: var(--accent2);
+    color: white;
+  }
 
-.progress-label {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 6px;
-  font-size: 12px;
-  font-weight: 600;
-  color: var(--muted);
-}
+  /* Progress bar */
+  .progress-wrap {
+    max-width: 960px;
+    margin: 20px auto 0;
+    padding: 0 24px;
+  }
 
-.progress-label strong { color: var(--accent2); font-size: 13px; }
+  .progress-label {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--muted);
+  }
 
-.progress-bar-outer {
-  background: var(--border);
-  border-radius: 20px;
-  height: 8px;
-  overflow: hidden;
-}
+  .progress-label strong { color: var(--accent2); font-size: 13px; }
 
-.progress-bar-inner {
-  height: 100%;
-  background: var(--accent2);
-  border-radius: 20px;
-  transition: width 0.4s ease;
-  width: 0%;
-}
+  .progress-bar-outer {
+    background: var(--border);
+    border-radius: 20px;
+    height: 8px;
+    overflow: hidden;
+  }
 
-.reset-btn {
-  font-family: 'Karla', sans-serif;
-  font-size: 11px;
-  font-weight: 600;
-  color: var(--muted);
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 2px 6px;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  transition: color 0.15s;
-}
+  .progress-bar-inner {
+    height: 100%;
+    background: var(--accent2);
+    border-radius: 20px;
+    transition: width 0.4s ease;
+    width: 0%;
+  }
 
-.reset-btn:hover { color: var(--accent); }
+  .reset-btn {
+    font-family: 'Karla', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--muted);
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 2px 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    transition: color 0.15s;
+  }
 
-  /* ── Swap button & menu ── */
-.card-actions {
-  display: flex;
-  gap: 6px;
-  margin-top: 10px;
-  flex-wrap: wrap;
-}
+  .reset-btn:hover { color: var(--accent); }
 
-.swap-btn {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  padding: 5px 12px;
-  border-radius: 20px;
-  border: 1.5px solid var(--border);
-  background: transparent;
-  font-family: 'Karla', sans-serif;
-  font-size: 11px;
-  font-weight: 600;
-  color: var(--muted);
-  cursor: pointer;
-  transition: all 0.18s;
-}
+  /* Swap button & menu */
+  .card-actions {
+    display: flex;
+    gap: 6px;
+    margin-top: 10px;
+    flex-wrap: wrap;
+  }
 
-.swap-btn:hover {
-  border-color: var(--accent3);
-  color: var(--accent3);
-  background: #fff8e6;
-}
+  .swap-btn {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 5px 12px;
+    border-radius: 20px;
+    border: 1.5px solid var(--border);
+    background: transparent;
+    font-family: 'Karla', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--muted);
+    cursor: pointer;
+    transition: all 0.18s;
+  }
 
-.day-card.swapped {
-  border-right-color: var(--accent3);
-  border-bottom-color: var(--accent3);
-}
+  .swap-btn:hover {
+    border-color: var(--accent3);
+    color: var(--accent3);
+    background: #fff8e6;
+  }
 
-.tag-swap {
-  background: #fff8e6;
-  color: var(--accent3);
-}
+  .day-card.swapped {
+    border-right-color: var(--accent3);
+    border-bottom-color: var(--accent3);
+  }
 
-/* Swap menu overlay */
-.swap-overlay {
-  display: none;
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.5);
-  z-index: 100;
-  align-items: flex-end;
-  justify-content: center;
-}
+  .tag-swap {
+    background: #fff8e6;
+    color: var(--accent3);
+  }
 
-.swap-overlay.open {
-  display: flex;
-}
+  /* Swap menu overlay */
+  .swap-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.5);
+    z-index: 100;
+    align-items: flex-end;
+    justify-content: center;
+  }
 
-.swap-menu {
-  background: var(--paper);
-  border-radius: 20px 20px 0 0;
-  padding: 24px;
-  width: 100%;
-  max-width: 520px;
-  max-height: 75vh;
-  overflow-y: auto;
-}
+  .swap-overlay.open {
+    display: flex;
+  }
 
-.swap-menu h4 {
-  font-family: 'Playfair Display', serif;
-  font-size: 1.1rem;
-  margin-bottom: 16px;
-  color: var(--ink);
-}
+  .swap-menu {
+    background: var(--paper);
+    border-radius: 20px 20px 0 0;
+    padding: 24px;
+    width: 100%;
+    max-width: 520px;
+    max-height: 75vh;
+    overflow-y: auto;
+  }
 
-.swap-option {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  width: 100%;
-  padding: 12px 14px;
-  margin-bottom: 6px;
-  background: var(--bg);
-  border: 1.5px solid var(--border);
-  border-radius: 10px;
-  cursor: pointer;
-  font-family: 'Karla', sans-serif;
-  text-align: left;
-  transition: all 0.15s;
-}
+  .swap-menu h4 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem;
+    margin-bottom: 16px;
+    color: var(--ink);
+  }
 
-.swap-option:hover {
-  border-color: var(--accent3);
-  background: #fff8e6;
-}
+  .swap-option {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 12px 14px;
+    margin-bottom: 6px;
+    background: var(--bg);
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    cursor: pointer;
+    font-family: 'Karla', sans-serif;
+    text-align: left;
+    transition: all 0.15s;
+  }
 
-.restore-option {
-  border-color: var(--accent2);
-  color: var(--accent2);
-  margin-bottom: 12px;
-}
+  .swap-option:hover {
+    border-color: var(--accent3);
+    background: #fff8e6;
+  }
 
-.restore-option:hover {
-  background: #f0f7f0;
-}
+  .restore-option {
+    border-color: var(--accent2);
+    color: var(--accent2);
+    margin-bottom: 12px;
+  }
 
-.swap-option-name {
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--ink);
-}
+  .restore-option:hover {
+    background: #f0f7f0;
+  }
 
-.swap-close {
-  width: 100%;
-  margin-top: 10px;
-  padding: 10px;
-  border-radius: 10px;
-  border: none;
-  background: var(--ink);
-  color: var(--bg);
-  font-family: 'Karla', sans-serif;
-  font-size: 13px;
-  font-weight: 600;
-  cursor: pointer;
-}
+  .swap-option-name {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--ink);
+  }
+
+  .swap-close {
+    width: 100%;
+    margin-top: 10px;
+    padding: 10px;
+    border-radius: 10px;
+    border: none;
+    background: var(--ink);
+    color: var(--bg);
+    font-family: 'Karla', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+  }
 </style>
 </head>
 <body>
@@ -638,7 +637,7 @@
   <button class="filter-btn" onclick="filterMeals('seafood', this)">Seafood</button>
 </div>
 
-  <div class="progress-wrap">
+<div class="progress-wrap">
   <div class="progress-label">
     <span>Meals completed — <strong id="monthLabel"></strong></span>
     <div style="display:flex;align-items:center;gap:12px;">
@@ -650,6 +649,7 @@
     <div class="progress-bar-inner" id="progressBar"></div>
   </div>
 </div>
+
 <div class="weeks" id="weeksContainer"></div>
 
 <div class="guide-wrap">
@@ -689,6 +689,14 @@
 <footer>
   Filter by cuisine above &middot; Seafood filter shows all ocean nights &middot; Blue cards = seafood &middot; Keep seafood to ~4 oz per person
 </footer>
+
+<div class="swap-overlay" id="swapMenu">
+  <div class="swap-menu">
+    <h4>Pick a swap for tonight</h4>
+    <div id="swapList"></div>
+    <button class="swap-close" onclick="closeSwapMenu()">Cancel</button>
+  </div>
+</div>
 
 <script>
 const meals = [
@@ -808,41 +816,16 @@ const meals = [
     desc:"Full toppings spread — lettuce, tomato, pickles, onion, bacon, multiple cheeses, loaded oven fries. Everyone builds their own.",
     gout:"4 oz patties. The fun is in the toppings, not the size of the burger." },
 
-{ day:30, name:"Malibu Chicken Sandwich", cuisine:"american", seafood:false,
+  { day:30, name:"Malibu Chicken Sandwich", cuisine:"american", seafood:false,
     desc:"Crispy fried chicken breast topped with shaved ham, melted Swiss cheese, and honey mustard on a toasted brioche bun. Seasoned oven fries on the side.",
     gout:"Chicken keeps it gout-friendly. Go easy on the ham portion — processed meat in moderation." },
 
   { day:31, name:"Carne Asada Platter", cuisine:"mexican", seafood:false,
     desc:"Marinated flank steak with Mexican rice, charro beans, grilled onions, guacamole, and warm tortillas.",
     gout:"End the month right — 5 oz of steak, then fill the plate with rice, beans, and guac." },
-
-  
 ];
 
-const weekLabels = ["Week One", "Week Two", "Week Three", "Week Four", "Week Five"];
-const dayNames = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
-
-// Anchor Day 1 to today, then calculate forward
-const today = new Date();
-const planStartDate = new Date(today.getFullYear(), today.getMonth(), 1);
-const planMonthName = planStartDate.toLocaleString('default', { month: 'long', year: 'numeric' });
-
-// Auto-reset checkmarks when the month changes
-const MONTH_KEY = 'mealplan_month';
-const savedMonth = localStorage.getItem(MONTH_KEY);
-const currentMonth = `${today.getFullYear()}-${today.getMonth()}`;
-if (savedMonth !== currentMonth) {
-  localStorage.removeItem('mealplan_checked');
-  localStorage.setItem(MONTH_KEY, currentMonth);
-}
-
-function getDayName(dayNum) {
-  const date = new Date(planStartDate);
-  date.setDate(dayNum);
-  return dayNames[date.getDay()];
-}
-
-// ── Swap pool ──────────────────────────────────────────────────────────────
+// Swap pool — alternative meals to swap in for any day
 const swapPool = [
   { name:"Grilled Chicken Sandwich", cuisine:"american", seafood:false,
     desc:"Juicy grilled chicken breast, lettuce, tomato, pickles, and honey mustard on a toasted brioche bun. Seasoned oven fries on the side.",
@@ -893,9 +876,47 @@ const swapPool = [
     gout:"Watch sodium and portion sizes. Avoid organ meat dishes and high-purine soups." },
 ];
 
-// ── Swap storage ───────────────────────────────────────────────────────────
-const SWAP_KEY = 'mealplan_swaps';
+const weekLabels = ["Week One", "Week Two", "Week Three", "Week Four", "Week Five"];
+const dayNames = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
 
+// Anchor Day 1 to first day of current month
+const today = new Date();
+const planStartDate = new Date(today.getFullYear(), today.getMonth(), 1);
+const planMonthName = planStartDate.toLocaleString('default', { month: 'long', year: 'numeric' });
+
+// Storage keys
+const STORAGE_KEY = 'mealplan_checked';
+const SWAP_KEY = 'mealplan_swaps';
+const MONTH_KEY = 'mealplan_month';
+
+// Auto-reset checkmarks AND swaps when the month changes
+const currentMonth = `${today.getFullYear()}-${today.getMonth()}`;
+const savedMonth = localStorage.getItem(MONTH_KEY);
+if (savedMonth !== currentMonth) {
+  localStorage.removeItem(STORAGE_KEY);
+  localStorage.removeItem(SWAP_KEY);
+  localStorage.setItem(MONTH_KEY, currentMonth);
+}
+
+let currentFilter = 'all';
+
+function getDayName(dayNum) {
+  const date = new Date(planStartDate);
+  date.setDate(dayNum);
+  return dayNames[date.getDay()];
+}
+
+// Checkmark storage
+function getChecked() {
+  try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || []; }
+  catch { return []; }
+}
+
+function saveChecked(arr) {
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(arr)); } catch {}
+}
+
+// Swap storage
 function getSwaps() {
   try { return JSON.parse(localStorage.getItem(SWAP_KEY)) || {}; }
   catch { return {}; }
@@ -905,9 +926,191 @@ function saveSwaps(obj) {
   try { localStorage.setItem(SWAP_KEY, JSON.stringify(obj)); } catch {}
 }
 
-// Clear swaps on month reset — add this right after the existing month reset block
-// (already handled below by clearing SWAP_KEY alongside mealplan_checked)
+// Get the meal currently shown for a given day (original or swapped)
+function getMealForDay(day) {
+  const swaps = getSwaps();
+  if (swaps[day] !== undefined) {
+    return { ...swapPool[swaps[day]], day, _swapped: true };
+  }
+  const original = meals.find(m => m.day === day);
+  return { ...original, _swapped: false };
+}
 
+// Check if a meal matches the current filter
+function matchesFilter(meal, filter) {
+  if (filter === 'all') return true;
+  if (filter === 'seafood') return meal.seafood;
+  return meal.cuisine === filter;
+}
+
+// Build a single card's HTML content (used by both initial render and rebuild)
+function buildCardHTML(meal, day) {
+  const checked = getChecked();
+  const isChecked = checked.includes(day);
+
+  let tagsHTML = '';
+  if (meal.seafood) tagsHTML += `<span class="cuisine-tag tag-seafood">Seafood</span>`;
+  tagsHTML += `<span class="cuisine-tag tag-${meal.cuisine}">${meal.cuisine.charAt(0).toUpperCase()+meal.cuisine.slice(1)}</span>`;
+  if (meal._swapped) tagsHTML += `<span class="cuisine-tag tag-swap">Swapped</span>`;
+
+  const goutHTML = meal.gout ? `<div class="gout-tip">💧 ${meal.gout}</div>` : '';
+
+  return `
+    <div class="day-label">${getDayName(day)} · Day ${day}</div>
+    <div class="day-num">${day}</div>
+    <div class="meal-name">${meal.name}</div>
+    <div class="meal-desc">${meal.desc}</div>
+    ${goutHTML}
+    <div class="tags">${tagsHTML}</div>
+    <div class="card-actions">
+      <button class="check-btn" onclick="toggleDay(${day})">
+        <span class="check-icon">${isChecked ? '✓' : ''}</span>
+        <span class="check-label">${isChecked ? 'Done!' : 'Mark as made'}</span>
+      </button>
+      <button class="swap-btn" onclick="openSwapMenu(${day})">⇄ Swap</button>
+    </div>
+  `;
+}
+
+// Apply correct CSS classes to a card based on its state
+function applyCardState(card, meal, day) {
+  const isChecked = getChecked().includes(day);
+  card.className = 'day-card' +
+    (isChecked ? ' done' : '') +
+    (meal._swapped ? ' swapped' : '') +
+    (matchesFilter(meal, currentFilter) ? '' : ' hidden');
+}
+
+// Build the entire weeks grid
+function buildUI(filter) {
+  currentFilter = filter;
+  const container = document.getElementById('weeksContainer');
+  container.innerHTML = '';
+
+  const weeks = [[], [], [], [], []];
+  meals.forEach(m => {
+    const wi = m.day <= 7 ? 0 : m.day <= 14 ? 1 : m.day <= 21 ? 2 : m.day <= 28 ? 3 : 4;
+    weeks[wi].push(m);
+  });
+
+  weeks.forEach((week, wi) => {
+    // Count visible meals using the actual displayed meal (which may be swapped)
+    const visibleCount = week.filter(m => matchesFilter(getMealForDay(m.day), filter)).length;
+
+    if (visibleCount === 0) return;
+
+    const block = document.createElement('div');
+    block.className = 'week-block';
+    block.innerHTML = `
+      <div class="week-header">
+        <div class="week-num">0${wi+1}</div>
+        <div>
+          <div class="week-title">${weekLabels[wi]}</div>
+          <div class="week-sub">${visibleCount} dinner${visibleCount !== 1 ? 's' : ''}</div>
+        </div>
+      </div>
+    `;
+
+    const grid = document.createElement('div');
+    grid.className = 'days-grid';
+
+    week.forEach(originalMeal => {
+      const meal = getMealForDay(originalMeal.day);
+      const card = document.createElement('div');
+      card.dataset.day = originalMeal.day;
+      applyCardState(card, meal, originalMeal.day);
+      card.innerHTML = buildCardHTML(meal, originalMeal.day);
+      grid.appendChild(card);
+    });
+
+    block.appendChild(grid);
+    container.appendChild(block);
+  });
+}
+
+// Rebuild a single card in place (after swap or restore)
+function rebuildCard(day) {
+  const card = document.querySelector(`.day-card[data-day="${day}"]`);
+  if (!card) return;
+  const meal = getMealForDay(day);
+  applyCardState(card, meal, day);
+  card.innerHTML = buildCardHTML(meal, day);
+
+  // Recalculate week count in case filter visibility changed
+  refreshWeekCounts();
+}
+
+// Update the "X dinners" subtitle on each week header to reflect filter + swaps
+function refreshWeekCounts() {
+  const blocks = document.querySelectorAll('.week-block');
+  const weeks = [[], [], [], [], []];
+  meals.forEach(m => {
+    const wi = m.day <= 7 ? 0 : m.day <= 14 ? 1 : m.day <= 21 ? 2 : m.day <= 28 ? 3 : 4;
+    weeks[wi].push(m);
+  });
+
+  let blockIndex = 0;
+  weeks.forEach((week) => {
+    const visibleCount = week.filter(m => matchesFilter(getMealForDay(m.day), currentFilter)).length;
+    if (visibleCount === 0) return;
+    const block = blocks[blockIndex];
+    if (block) {
+      const sub = block.querySelector('.week-sub');
+      if (sub) sub.textContent = `${visibleCount} dinner${visibleCount !== 1 ? 's' : ''}`;
+    }
+    blockIndex++;
+  });
+}
+
+function filterMeals(type, btn) {
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  buildUI(type);
+}
+
+// Checkmark toggling
+function toggleDay(day) {
+  let checked = getChecked();
+  checked = checked.includes(day)
+    ? checked.filter(d => d !== day)
+    : [...checked, day];
+  saveChecked(checked);
+
+  const card = document.querySelector(`.day-card[data-day="${day}"]`);
+  if (card) {
+    const meal = getMealForDay(day);
+    applyCardState(card, meal, day);
+    const icon = card.querySelector('.check-icon');
+    const label = card.querySelector('.check-label');
+    const isDone = checked.includes(day);
+    if (icon) icon.textContent = isDone ? '✓' : '';
+    if (label) label.textContent = isDone ? 'Done!' : 'Mark as made';
+  }
+  updateProgress();
+}
+
+function updateProgress() {
+  const count = getChecked().length;
+  document.getElementById('progressText').textContent = `${count} of 31`;
+  document.getElementById('progressBar').style.width = (count / 31 * 100) + '%';
+}
+
+function resetAll() {
+  if (!confirm('Clear all checkmarks and start fresh?')) return;
+  saveChecked([]);
+  document.querySelectorAll('.day-card.done').forEach(card => {
+    const day = parseInt(card.dataset.day, 10);
+    const meal = getMealForDay(day);
+    applyCardState(card, meal, day);
+    const icon = card.querySelector('.check-icon');
+    const label = card.querySelector('.check-label');
+    if (icon) icon.textContent = '';
+    if (label) label.textContent = 'Mark as made';
+  });
+  updateProgress();
+}
+
+// Swap menu
 let activeSwapDay = null;
 
 function openSwapMenu(day) {
@@ -916,9 +1119,8 @@ function openSwapMenu(day) {
   const list = document.getElementById('swapList');
   list.innerHTML = '';
 
-  // Add "Restore original" if this day has a swap
   const swaps = getSwaps();
-  if (swaps[day]) {
+  if (swaps[day] !== undefined) {
     const restoreBtn = document.createElement('button');
     restoreBtn.className = 'swap-option restore-option';
     restoreBtn.innerHTML = `<span class="swap-option-name">↩ Restore Original Meal</span>`;
@@ -962,175 +1164,15 @@ function restoreOriginal(day) {
   rebuildCard(day);
 }
 
-function rebuildCard(day) {
-  const card = document.querySelector(`.day-card[data-day="${day}"]`);
-  if (!card) return;
+// Close swap menu when clicking the dark overlay
+document.getElementById('swapMenu').addEventListener('click', (e) => {
+  if (e.target.id === 'swapMenu') closeSwapMenu();
+});
 
-  const swaps = getSwaps();
-  const checked = getChecked();
-  const isChecked = checked.includes(day);
-  const isSwapped = swaps[day] !== undefined;
-  const m = isSwapped ? { ...swapPool[swaps[day]], day } : meals.find(x => x.day === day);
-
-  let tagsHTML = '';
-  if (m.seafood) tagsHTML += `<span class="cuisine-tag tag-seafood">Seafood</span>`;
-  tagsHTML += `<span class="cuisine-tag tag-${m.cuisine}">${m.cuisine.charAt(0).toUpperCase()+m.cuisine.slice(1)}</span>`;
-  if (isSwapped) tagsHTML += `<span class="cuisine-tag tag-swap">Swapped</span>`;
-
-  const goutHTML = m.gout ? `<div class="gout-tip">💧 ${m.gout}</div>` : '';
-
-  card.className = 'day-card' + (isChecked ? ' done' : '') + (isSwapped ? ' swapped' : '');
-  card.innerHTML = `
-    <div class="day-label">${getDayName(day)} · Day ${day}</div>
-    <div class="day-num">${day}</div>
-    <div class="meal-name">${m.name}</div>
-    <div class="meal-desc">${m.desc}</div>
-    ${goutHTML}
-    <div class="tags">${tagsHTML}</div>
-    <div class="card-actions">
-      <button class="check-btn" onclick="toggleDay(${day})">
-        <span class="check-icon">${isChecked ? '✓' : ''}</span>
-        <span class="check-label">${isChecked ? 'Done!' : 'Mark as made'}</span>
-      </button>
-      <button class="swap-btn" onclick="openSwapMenu(${day})">⇄ Swap</button>
-    </div>
-  `;
-}
-function buildUI(filter) {
-  const container = document.getElementById('weeksContainer');
-  container.innerHTML = '';
-
-  const weeks = [[], [], [], [], []];
-  meals.forEach(m => {
-    const wi = m.day <= 7 ? 0 : m.day <= 14 ? 1 : m.day <= 21 ? 2 : m.day <= 28 ? 3 : 4;
-    weeks[wi].push(m);
-  });
-
-  weeks.forEach((week, wi) => {
-    const visibleCount = filter === 'all' ? week.length
-      : filter === 'seafood' ? week.filter(m => m.seafood).length
-      : week.filter(m => m.cuisine === filter).length;
-
-    if (visibleCount === 0) return;
-
-    const block = document.createElement('div');
-    block.className = 'week-block';
-    block.innerHTML = `
-      <div class="week-header">
-        <div class="week-num">0${wi+1}</div>
-        <div>
-          <div class="week-title">${weekLabels[wi]}</div>
-          <div class="week-sub">${visibleCount} dinner${visibleCount !== 1 ? 's' : ''}</div>
-        </div>
-      </div>
-    `;
-
-    const grid = document.createElement('div');
-    grid.className = 'days-grid';
-
-    week.forEach(m => {
-      const isVisible = filter === 'all' ? true
-        : filter === 'seafood' ? m.seafood
-        : m.cuisine === filter;
-
-      const card = document.createElement('div');
-      card.className = 'day-card' + (isVisible ? '' : ' hidden');
-
-      let tagsHTML = '';
-      if (m.seafood) tagsHTML += `<span class="cuisine-tag tag-seafood">Seafood</span>`;
-      tagsHTML += `<span class="cuisine-tag tag-${m.cuisine}">${m.cuisine.charAt(0).toUpperCase()+m.cuisine.slice(1)}</span>`;
-
-      const goutHTML = m.gout ? `<div class="gout-tip">💧 ${m.gout}</div>` : '';
-
-<<<<<<< HEAD
-   const isChecked = getChecked().includes(m.day);
-      card.dataset.day = m.day;
-      if (isChecked) card.classList.add('done');
-
-      card.innerHTML = `
-        <div class="day-label">${getDayName(m.day)} · Day ${m.day}</div>
-        <div class="day-num">${m.day}</div>
-        <div class="meal-name">${m.name}</div>
-        <div class="meal-desc">${m.desc}</div>
-        ${goutHTML}
-        <div class="tags">${tagsHTML}</div>
-        <button class="check-btn" onclick="toggleDay(${m.day})">
-          <span class="check-icon">${isChecked ? '✓' : ''}</span>
-          <span class="check-label">${isChecked ? 'Done!' : 'Mark as made'}</span>
-        </button>
-      `;
-=======
-card.dataset.day = m.day;
->>>>>>> parent of f588b9b (Update index.html)
-      grid.appendChild(card);
-    });
-    block.appendChild(grid);
-    container.appendChild(block);
-  });
-}
-
-function filterMeals(type, btn) {
-  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
-  buildUI(type);
-}
-  
-// ── Checkmark + localStorage persistence ──
-const STORAGE_KEY = 'mealplan_checked';
-
-function getChecked() {
-  try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || []; }
-  catch { return []; }
-}
-
-function saveChecked(arr) {
-  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(arr)); } catch {}
-}
-
-function toggleDay(day) {
-  let checked = getChecked();
-  checked = checked.includes(day)
-    ? checked.filter(d => d !== day)
-    : [...checked, day];
-  saveChecked(checked);
-  const card = document.querySelector(`.day-card[data-day="${day}"]`);
-  if (card) applyCheckedState(card, checked.includes(day));
-  updateProgress();
-}
-
-function applyCheckedState(card, isDone) {
-  const icon  = card.querySelector('.check-icon');
-  const label = card.querySelector('.check-label');
-  card.classList.toggle('done', isDone);
-  icon.textContent  = isDone ? '✓' : '';
-  label.textContent = isDone ? 'Done!' : 'Mark as made';
-}
-
-function updateProgress() {
-  const count = getChecked().length;
-  document.getElementById('progressText').textContent = `${count} of 31`;
-  document.getElementById('progressBar').style.width = (count / 31 * 100) + '%';
-}
-
-function resetAll() {
-  if (!confirm('Clear all checkmarks and start fresh?')) return;
-  saveChecked([]);
-  document.querySelectorAll('.day-card.done').forEach(card => applyCheckedState(card, false));
-  updateProgress();
-}
-  
+// Initialize
 document.getElementById('monthLabel').textContent = planMonthName;
 buildUI('all');
 updateProgress();
 </script>
-  <div class="swap-overlay" id="swapMenu">
-  <div class="swap-menu">
-    <h4>Pick a swap for tonight</h4>
-    <div id="swapList"></div>
-    <button class="swap-close" onclick="closeSwapMenu()">Cancel</button>
-  </div>
-</div>
 </body>
-</html>
-
 </html>
