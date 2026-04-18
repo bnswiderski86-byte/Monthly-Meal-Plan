@@ -572,6 +572,41 @@
     font-family: 'Karla', sans-serif;
     text-align: left;
     transition: all 0.15s;
+    gap: 10px;
+  }
+
+  .swap-option-tags {
+    display: flex;
+    gap: 4px;
+    flex-shrink: 0;
+  }
+
+  .swap-group-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 16px 4px 8px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--muted);
+    padding-bottom: 6px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .swap-group-heading:first-child {
+    margin-top: 4px;
+  }
+
+  .swap-group-count {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    color: var(--accent3);
+    background: var(--tag-mexican);
+    padding: 2px 8px;
+    border-radius: 20px;
   }
 
   .swap-option:hover {
@@ -2097,10 +2132,22 @@ function saveSwaps(obj) {
 }
 
 // Get the meal currently shown for a given day (original or swapped)
+// Swap storage format: { source: 'pool'|'menu', index: N }
+// Legacy format (just a number) is treated as 'pool' for backward compat
 function getMealForDay(day) {
   const swaps = getSwaps();
-  if (swaps[day] !== undefined) {
-    return { ...swapPool[swaps[day]], day, _swapped: true };
+  const swap = swaps[day];
+  if (swap !== undefined) {
+    // Legacy format: bare number means swapPool index
+    if (typeof swap === 'number') {
+      return { ...swapPool[swap], day, _swapped: true };
+    }
+    // New format: { source, index }
+    if (swap.source === 'menu') {
+      const menuMeal = meals[swap.index];
+      return { ...menuMeal, day, _swapped: true };
+    }
+    return { ...swapPool[swap.index], day, _swapped: true };
   }
   const original = meals.find(m => m.day === day);
   return { ...original, _swapped: false };
@@ -2298,21 +2345,76 @@ function openSwapMenu(day) {
     list.appendChild(restoreBtn);
   }
 
+  // Build unified option list: main menu meals + swap pool
+  // Tag each with its source so we know where to pull from on apply
+  const allOptions = [];
+  meals.forEach((meal, i) => {
+    // Skip the current day's own original meal from the swap list
+    if (meal.day !== day) {
+      allOptions.push({ meal, source: 'menu', index: i });
+    }
+  });
   swapPool.forEach((meal, i) => {
-    const btn = document.createElement('button');
-    btn.className = 'swap-option';
-    const tagColor = meal.cuisine === 'american' ? 'tag-american'
-      : meal.cuisine === 'mexican' ? 'tag-mexican'
-      : meal.cuisine === 'italian' ? 'tag-italian' : 'tag-american';
-    btn.innerHTML = `
-      <span class="swap-option-name">${meal.name}</span>
-      <span class="cuisine-tag ${tagColor}">${meal.cuisine.charAt(0).toUpperCase()+meal.cuisine.slice(1)}</span>
-    `;
-    btn.onclick = () => { applySwap(day, i); closeSwapMenu(); };
-    list.appendChild(btn);
+    allOptions.push({ meal, source: 'pool', index: i });
+  });
+
+  // Group by cuisine
+  const groups = {
+    american: { label: 'American', items: [] },
+    mexican: { label: 'Mexican', items: [] },
+    italian: { label: 'Italian', items: [] },
+  };
+  allOptions.forEach(opt => {
+    const cuisine = opt.meal.cuisine;
+    if (groups[cuisine]) groups[cuisine].items.push(opt);
+  });
+
+  // Sort each group alphabetically and dedupe by name (so a meal doesn't
+  // show up twice if it's in both meals[] and swapPool)
+  Object.values(groups).forEach(g => {
+    const seen = new Set();
+    g.items = g.items
+      .filter(opt => {
+        if (seen.has(opt.meal.name)) return false;
+        seen.add(opt.meal.name);
+        return true;
+      })
+      .sort((a, b) => a.meal.name.localeCompare(b.meal.name));
+  });
+
+  // Render each cuisine group
+  ['american', 'mexican', 'italian'].forEach(cuisine => {
+    const group = groups[cuisine];
+    if (group.items.length === 0) return;
+
+    const heading = document.createElement('div');
+    heading.className = 'swap-group-heading';
+    heading.innerHTML = `<span>${group.label}</span><span class="swap-group-count">${group.items.length}</span>`;
+    list.appendChild(heading);
+
+    group.items.forEach(opt => {
+      const btn = document.createElement('button');
+      btn.className = 'swap-option';
+      const tagColor = `tag-${opt.meal.cuisine}`;
+      const seafoodTag = opt.meal.seafood
+        ? `<span class="cuisine-tag tag-seafood">Seafood</span>`
+        : '';
+      btn.innerHTML = `
+        <span class="swap-option-name">${opt.meal.name}</span>
+        <span class="swap-option-tags">
+          ${seafoodTag}
+          <span class="cuisine-tag ${tagColor}">${opt.meal.cuisine.charAt(0).toUpperCase()+opt.meal.cuisine.slice(1)}</span>
+        </span>
+      `;
+      btn.onclick = () => { applySwap(day, opt.source, opt.index); closeSwapMenu(); };
+      list.appendChild(btn);
+    });
   });
 
   menu.classList.add('open');
+  // Scroll the menu back to top so the restore button / first group is visible
+  const menuScroller = menu.querySelector('.swap-menu');
+  if (menuScroller) menuScroller.scrollTop = 0;
 }
 
 function closeSwapMenu() {
@@ -2320,9 +2422,9 @@ function closeSwapMenu() {
   activeSwapDay = null;
 }
 
-function applySwap(day, poolIndex) {
+function applySwap(day, source, index) {
   const swaps = getSwaps();
-  swaps[day] = poolIndex;
+  swaps[day] = { source, index };
   saveSwaps(swaps);
   rebuildCard(day);
 }
